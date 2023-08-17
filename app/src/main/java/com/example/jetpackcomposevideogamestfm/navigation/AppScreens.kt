@@ -6,6 +6,9 @@ sealed class AppScreens(val route: String){
     object MainScreen: AppScreens("main_screen")
     object FavGamesScreen: AppScreens("fav_games_screen")
     object SearchScreen: AppScreens("search_screen")
-    object GameDetailsScreen: AppScreens("game_details_screen")
+
+    object DetailsScreen: AppScreens("game_details_screen/{id}"){
+        fun createRoute(id:String)="game_details_screen/$id"
+    }
 
 }

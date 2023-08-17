@@ -6,10 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 
 @Composable
-fun DetailScreen(navController: NavController){
+fun DetailScreen(navController: NavController, id:String?){
 
     Box(){
-        Text(text = "Nombre: ")
+        Text(text = "Id: $id")
     }
 
 }

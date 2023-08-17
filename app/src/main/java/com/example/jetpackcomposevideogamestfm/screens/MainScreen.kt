@@ -3,6 +3,7 @@
 package com.example.jetpackcomposevideogamestfm.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,47 +39,56 @@ import com.example.jetpackcomposevideogamestfm.GamesCenturyState
 import com.example.jetpackcomposevideogamestfm.GamesViewModel
 import com.example.jetpackcomposevideogamestfm.model.GameModel
 import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
+import okhttp3.internal.wait
 
 @Composable
 fun MainScreen(navController: NavController) {
     val viewModel: GamesViewModel = hiltViewModel()
 
-    LazyColumn(
-        modifier = Modifier
+    Box(
+        Modifier
             .fillMaxSize()
-            .padding(8.dp)
+            .background(Color(0xFF445C77))
     ) {
-        item {
-            Button(
-                onClick = {
-                    //To FavGamesScreen
-                    navController.navigate(AppScreens.FavGamesScreen.route)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
+        ) {
+            item {
+                Button(
+                    onClick = {
+                        //To FavGamesScreen
+                        navController.navigate(AppScreens.FavGamesScreen.route)
+                    }
+                ) {
+                    Text(text = "Favs")
                 }
-            ) {
-                Text(text = "Favs")
             }
-        }
-        item {
-            Button(
-                onClick = {
-                    //To SearchScreen
-                    navController.navigate(AppScreens.SearchScreen.route)
+            item {
+                Button(
+                    onClick = {
+                        //To SearchScreen
+                        navController.navigate(AppScreens.SearchScreen.route)
+                    }
+                ) {
+                    Text(text = "Search")
                 }
-            ) {
-                Text(text = "Search")
             }
-        }
-        item {
-            BestGames2022(viewModel)
-        }
-        item {
-            BestGamesCentury(viewModel)
+            item {
+                BestGames2022(viewModel, navController)
+            }
+            item {
+                BestGamesCentury(viewModel, navController)
+            }
         }
     }
+
+
 }
 
 @Composable
-fun BestGamesCentury(viewModel: GamesViewModel) {
+fun BestGamesCentury(viewModel: GamesViewModel, navController: NavController) {
     val gamesState by remember { viewModel.gamesCenturyState }
 
     Column(
@@ -86,7 +96,10 @@ fun BestGamesCentury(viewModel: GamesViewModel) {
             .padding(8.dp)
             .fillMaxWidth()
     ) {
-        Text(text = "Best Games of the Century")
+        Text(
+            color = Color.White,
+            text = "Best Games of the Century"
+        )
 
         when (gamesState) {
             is GamesCenturyState.Loading -> {
@@ -97,7 +110,7 @@ fun BestGamesCentury(viewModel: GamesViewModel) {
                 val games = (gamesState as GamesCenturyState.Success).games
                 LazyRow {
                     items(games!!.size) {
-                        ItemDeJuego(games[it])
+                        ItemDeJuego(games[it], navController)
                     }
                 }
             }
@@ -115,7 +128,7 @@ fun BestGamesCentury(viewModel: GamesViewModel) {
 
 
 @Composable
-fun BestGames2022(viewModel: GamesViewModel) {
+fun BestGames2022(viewModel: GamesViewModel, navController: NavController) {
     val gamesState by remember { viewModel.games2022State }
 
     Column(
@@ -123,7 +136,10 @@ fun BestGames2022(viewModel: GamesViewModel) {
             .padding(8.dp)
             .fillMaxWidth()
     ) {
-        Text(text = "Highest Rated Games in 2022")
+        Text(
+            color = Color.White,
+            text = "Highest Rated Games in 2022"
+        )
 
         when (gamesState) {
             is Games2022State.Loading -> {
@@ -134,7 +150,7 @@ fun BestGames2022(viewModel: GamesViewModel) {
                 val games = (gamesState as Games2022State.Success).games
                 LazyRow {
                     items(games!!.size) {
-                        ItemDeJuego(games[it])
+                        ItemDeJuego(games[it], navController)
                     }
                 }
             }
@@ -166,7 +182,7 @@ fun LoadingState() {
 
 
 @Composable
-fun ItemDeJuego(juego: GameModel) {
+fun ItemDeJuego(juego: GameModel, navController: NavController) {
     val color1 = Color(0xFF028708)
     val color2 = Color(0xFF88D332)
     val color3 = Color(0xFFFBE627)
@@ -184,7 +200,7 @@ fun ItemDeJuego(juego: GameModel) {
     Card(
         onClick = {
             //Go to GameDetails
-
+            navController.navigate(AppScreens.DetailsScreen.createRoute(juego.id.toString()))
         },
         modifier = Modifier
             .padding(8.dp)

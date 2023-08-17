@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.jetpackcomposevideogamestfm.screens.MainScreen
 import com.example.jetpackcomposevideogamestfm.screens.LoginScreen
 import com.example.jetpackcomposevideogamestfm.screens.FavGamesScreen
@@ -13,23 +14,29 @@ import com.example.jetpackcomposevideogamestfm.screens.SearchScreen
 @Composable
 fun AppNavigation() {
 
-    val navController = rememberNavController()
+    val navigationController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = AppScreens.MainScreen.route){
+    NavHost(navController = navigationController, startDestination = AppScreens.MainScreen.route){
         composable(route = AppScreens.LoginScreen.route){
-            LoginScreen(navController)
+            LoginScreen(navigationController)
         }
         composable(route = AppScreens.MainScreen.route){
-            MainScreen(navController)
+            MainScreen(navigationController)
         }
         composable(route = AppScreens.FavGamesScreen.route){
-            FavGamesScreen(navController)
+            FavGamesScreen(navigationController)
         }
         composable(route = AppScreens.SearchScreen.route){
-            SearchScreen(navController)
+            SearchScreen(navigationController)
         }
-        composable(route = AppScreens.GameDetailsScreen.route){
-            DetailScreen(navController)
+        composable(
+            route = AppScreens.DetailsScreen.route,
+            arguments = listOf(navArgument("id") { defaultValue = "326243"})
+        ){backStackEntry->
+            DetailScreen(
+                navController = navigationController,
+                id = backStackEntry.arguments?.getString("id")
+            )
         }
     }
 
