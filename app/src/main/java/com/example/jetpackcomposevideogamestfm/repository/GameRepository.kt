@@ -8,18 +8,32 @@ import javax.inject.Inject
 
 
 interface GameRepository {
-    suspend fun getHighestRatedGames(): GameList?
 
     suspend fun getGameById(): GameModel?
+    suspend fun getBestGamesYear(): GameList?
+    suspend fun getBestGamesCentury(): GameList?
 }
 
 class GameRepositoryImp @Inject constructor(
     private val dataSource: ApiResponse
 ) : GameRepository {
 
-    override suspend fun getHighestRatedGames(): GameList? {
+    override suspend fun getBestGamesYear(): GameList? {
 
-        val response = dataSource.getHighestRatedGames()
+        val response = dataSource.getBestGamesYear()
+        val gamesList = response.body()
+
+        Log.i("GameList", "Total Games: ${gamesList?.topGames?.size ?: 0}")
+
+        gamesList?.topGames?.forEach { game ->
+            Log.d("GameList", "Name: ${game.name}")
+        }
+
+        return gamesList
+    }
+
+    override suspend fun getBestGamesCentury(): GameList? {
+        val response = dataSource.getBestGamesCentury()
         val gamesList = response.body()
 
         Log.i("GameList", "Total Games: ${gamesList?.topGames?.size ?: 0}")

@@ -7,12 +7,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.jetpackcomposevideogamestfm.screens.MainScreen
 import com.example.jetpackcomposevideogamestfm.screens.LoginScreen
 import com.example.jetpackcomposevideogamestfm.screens.FavGamesScreen
+import com.example.jetpackcomposevideogamestfm.screens.DetailScreen
+import com.example.jetpackcomposevideogamestfm.screens.SearchScreen
 
 @Composable
 fun AppNavigation() {
 
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = AppScreens.LoginScreen.route){
+
+    NavHost(navController = navController, startDestination = AppScreens.MainScreen.route){
         composable(route = AppScreens.LoginScreen.route){
             LoginScreen(navController)
         }
@@ -21,6 +24,12 @@ fun AppNavigation() {
         }
         composable(route = AppScreens.FavGamesScreen.route){
             FavGamesScreen(navController)
+        }
+        composable(route = AppScreens.SearchScreen.route){
+            SearchScreen(navController)
+        }
+        composable(route = AppScreens.GameDetailsScreen.route){
+            DetailScreen(navController)
         }
     }
 
