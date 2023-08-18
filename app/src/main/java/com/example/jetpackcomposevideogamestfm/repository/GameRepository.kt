@@ -2,6 +2,7 @@ package com.example.jetpackcomposevideogamestfm.repository
 
 import android.util.Log
 import com.example.jetpackcomposevideogamestfm.datasource.ApiResponse
+import com.example.jetpackcomposevideogamestfm.model.GameDetailsModel
 import com.example.jetpackcomposevideogamestfm.model.GameList
 import com.example.jetpackcomposevideogamestfm.model.GameModel
 import javax.inject.Inject
@@ -9,7 +10,7 @@ import javax.inject.Inject
 
 interface GameRepository {
 
-    suspend fun getGameById(): GameModel?
+    suspend fun getGameById(id:Int): GameDetailsModel?
     suspend fun getBestGamesYear(): GameList?
     suspend fun getBestGamesCentury(): GameList?
 }
@@ -45,9 +46,9 @@ class GameRepositoryImp @Inject constructor(
         return gamesList
     }
 
-    override suspend fun getGameById(): GameModel? {
+    override suspend fun getGameById(id:Int): GameDetailsModel? {
 
-        val response = dataSource.getGameById()
+        val response = dataSource.getGameById(id)
         val gameModel= response.body()
 
         gameModel?.let {

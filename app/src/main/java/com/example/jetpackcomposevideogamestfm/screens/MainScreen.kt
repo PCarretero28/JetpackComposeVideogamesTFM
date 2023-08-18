@@ -34,12 +34,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.jetpackcomposevideogamestfm.Games2022State
+import com.example.jetpackcomposevideogamestfm.GamesState
 import com.example.jetpackcomposevideogamestfm.GamesCenturyState
 import com.example.jetpackcomposevideogamestfm.GamesViewModel
 import com.example.jetpackcomposevideogamestfm.model.GameModel
 import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
-import okhttp3.internal.wait
 
 @Composable
 fun MainScreen(navController: NavController) {
@@ -110,7 +109,7 @@ fun BestGamesCentury(viewModel: GamesViewModel, navController: NavController) {
                 val games = (gamesState as GamesCenturyState.Success).games
                 LazyRow {
                     items(games!!.size) {
-                        ItemDeJuego(games[it], navController)
+                        GameCardItem(games[it], navController)
                     }
                 }
             }
@@ -129,7 +128,7 @@ fun BestGamesCentury(viewModel: GamesViewModel, navController: NavController) {
 
 @Composable
 fun BestGames2022(viewModel: GamesViewModel, navController: NavController) {
-    val gamesState by remember { viewModel.games2022State }
+    val gamesState by remember { viewModel.gamesState }
 
     Column(
         modifier = Modifier
@@ -142,20 +141,20 @@ fun BestGames2022(viewModel: GamesViewModel, navController: NavController) {
         )
 
         when (gamesState) {
-            is Games2022State.Loading -> {
+            is GamesState.Loading -> {
                 LoadingState()
             }
 
-            is Games2022State.Success -> {
-                val games = (gamesState as Games2022State.Success).games
+            is GamesState.Success -> {
+                val games = (gamesState as GamesState.Success).games
                 LazyRow {
                     items(games!!.size) {
-                        ItemDeJuego(games[it], navController)
+                        GameCardItem(games[it], navController)
                     }
                 }
             }
 
-            is Games2022State.Error -> {
+            is GamesState.Error -> {
                 // Error loading games
             }
         }
@@ -164,6 +163,8 @@ fun BestGames2022(viewModel: GamesViewModel, navController: NavController) {
     LaunchedEffect(true) {
         viewModel.getBestGamesOfTheYear()
     }
+
+
 }
 
 @Composable
@@ -182,19 +183,21 @@ fun LoadingState() {
 
 
 @Composable
-fun ItemDeJuego(juego: GameModel, navController: NavController) {
-    val color1 = Color(0xFF028708)
-    val color2 = Color(0xFF88D332)
-    val color3 = Color(0xFFFBE627)
-    val color4 = Color(0xFFFF9800)
-    val color5 = Color(0xFFF62B1C)
+fun GameCardItem(juego: GameModel, navController: NavController) {
+    val color1 = Color(0xFF017E07)
+    val color2 = Color(0xFF7BD119)
+    val color3 = Color(0xFFEBD619)
+    val color4 = Color(0xFFE2A405)
+    val color5 = Color(0xFFDA6D33)
+    val color6 = Color(0xFFF62B1C)
 
     val metacriticColor = when (juego.metacritic) {
-        in 95..Int.MAX_VALUE -> color1
-        in 90..94 -> color2
-        in 85..89 -> color3
-        in 79..84 -> color4
-        else -> color5
+        in 94..Int.MAX_VALUE -> color1
+        in 85..93 -> color2
+        in 71..84 -> color3
+        in 61..70 -> color4
+        in 51..60 -> color5
+        else -> color6
     }
 
     Card(
