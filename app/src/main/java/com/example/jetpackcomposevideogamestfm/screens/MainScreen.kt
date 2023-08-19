@@ -34,8 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.jetpackcomposevideogamestfm.GamesCasualState
 import com.example.jetpackcomposevideogamestfm.GamesState
 import com.example.jetpackcomposevideogamestfm.GamesCenturyState
+import com.example.jetpackcomposevideogamestfm.GamesPlaystationState
 import com.example.jetpackcomposevideogamestfm.GamesViewModel
 import com.example.jetpackcomposevideogamestfm.model.GameModel
 import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
@@ -44,46 +46,126 @@ import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
 fun MainScreen(navController: NavController) {
     val viewModel: GamesViewModel = hiltViewModel()
 
-    Box(
+    Column(
         Modifier
             .fillMaxSize()
             .background(Color(0xFF445C77))
     ) {
+        Row {
+            Button(
+                onClick = {
+                    //To FavGamesScreen
+                    navController.navigate(AppScreens.FavGamesScreen.route)
+                }
+            ) {
+                Text(text = "Favs")
+            }
+            Button(
+                onClick = {
+                    //To SearchScreen
+                    navController.navigate(AppScreens.SearchScreen.route)
+                }
+            ) {
+                Text(text = "Search")
+            }
+        }
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
             item {
-                Button(
-                    onClick = {
-                        //To FavGamesScreen
-                        navController.navigate(AppScreens.FavGamesScreen.route)
-                    }
-                ) {
-                    Text(text = "Favs")
-                }
-            }
-            item {
-                Button(
-                    onClick = {
-                        //To SearchScreen
-                        navController.navigate(AppScreens.SearchScreen.route)
-                    }
-                ) {
-                    Text(text = "Search")
-                }
-            }
-            item {
                 BestGames2022(viewModel, navController)
             }
             item {
                 BestGamesCentury(viewModel, navController)
             }
+            item {
+                PlaystationGames(viewModel, navController)
+            }
+            item {
+                CasualGames(viewModel, navController)
+            }
+        }
+    }
+}
+
+@Composable
+fun PlaystationGames(viewModel: GamesViewModel, navController: NavController) {
+    val gamesState by remember { viewModel.gamesPlaystationState }
+
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            color = Color.White,
+            text = "Playstation Games"
+        )
+
+        when (gamesState) {
+            is GamesPlaystationState.Loading -> {
+                LoadingState()
+            }
+
+            is GamesPlaystationState.Success -> {
+                val games = (gamesState as GamesPlaystationState.Success).games
+                LazyRow {
+                    items(games!!.size) {
+                        GameCardItem(games[it], navController)
+                    }
+                }
+            }
+
+            is GamesPlaystationState.Error -> {
+                ErrorState()
+            }
         }
     }
 
+    LaunchedEffect(true) {
+        viewModel.getPlaystationGames()
+    }
+}
 
+@Composable
+fun CasualGames(viewModel: GamesViewModel, navController: NavController) {
+    val gamesState by remember { viewModel.gamesCasualState }
+
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            color = Color.White,
+            text = "Casual Games"
+        )
+
+        when (gamesState) {
+            is GamesCasualState.Loading -> {
+                LoadingState()
+            }
+
+            is GamesCasualState.Success -> {
+                val games = (gamesState as GamesCasualState.Success).games
+                LazyRow {
+                    items(games!!.size) {
+                        GameCardItem(games[it], navController)
+                    }
+                }
+            }
+
+            is GamesCasualState.Error -> {
+                ErrorState()
+            }
+        }
+    }
+
+    LaunchedEffect(true) {
+        viewModel.getCasualGames()
+    }
 }
 
 @Composable
@@ -115,7 +197,7 @@ fun BestGamesCentury(viewModel: GamesViewModel, navController: NavController) {
             }
 
             is GamesCenturyState.Error -> {
-                // Error loading games
+                ErrorState()
             }
         }
     }
@@ -180,6 +262,14 @@ fun LoadingState() {
         )
     }
 }
+
+@Composable
+fun ErrorState() {
+    Box {
+        Text(text = "Error getting games from API", color = Color.Red)
+    }
+}
+
 
 
 @Composable

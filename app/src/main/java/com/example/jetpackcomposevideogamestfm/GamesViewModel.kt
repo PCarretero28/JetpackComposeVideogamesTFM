@@ -19,10 +19,23 @@ sealed class GamesState {
     data class Success(val games: List<GameModel>?) : GamesState()
     data class Error(val message: String) : GamesState()
 }
+
 sealed class GamesCenturyState {
     object Loading : GamesCenturyState()
     data class Success(val games: List<GameModel>?) : GamesCenturyState()
     data class Error(val message: String) : GamesCenturyState()
+}
+
+sealed class GamesCasualState {
+    object Loading : GamesCasualState()
+    data class Success(val games: List<GameModel>?) : GamesCasualState()
+    data class Error(val message: String) : GamesCasualState()
+}
+
+sealed class GamesPlaystationState {
+    object Loading : GamesPlaystationState()
+    data class Success(val games: List<GameModel>?) : GamesPlaystationState()
+    data class Error(val message: String) : GamesPlaystationState()
 }
 
 sealed class DetailsState {
@@ -30,6 +43,7 @@ sealed class DetailsState {
     data class Success(val game: GameDetailsModel?) : DetailsState()
     data class Error(val message: String) : DetailsState()
 }
+
 
 
 @HiltViewModel
@@ -43,6 +57,12 @@ class GamesViewModel @Inject constructor(
     private val _gamesCenturyState = mutableStateOf<GamesCenturyState>(GamesCenturyState.Loading)
     val gamesCenturyState: State<GamesCenturyState> = _gamesCenturyState
 
+    private val _gamesCasualState = mutableStateOf<GamesCasualState>(GamesCasualState.Loading)
+    val gamesCasualState: State<GamesCasualState> = _gamesCasualState
+
+    private val _gamesPlaystationState = mutableStateOf<GamesPlaystationState>(GamesPlaystationState.Loading)
+    val gamesPlaystationState: State<GamesPlaystationState> = _gamesPlaystationState
+
     private val _detailsState = mutableStateOf<DetailsState>(DetailsState.Loading)
     val detailsState: State<DetailsState> = _detailsState
 
@@ -50,8 +70,7 @@ class GamesViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try{
                 val gameList = gameRepositoryImp.getBestGamesYear()
-                val games = gameList?.topGames // Extract the list of games from GameList
-                Log.d("GamesViewModel", games.toString())
+                val games = gameList?.topGames
                 _gamesState.value = GamesState.Success(games)
             }catch (e: Exception){
                 _gamesState.value = GamesState.Error("Error al obtener juegos")
@@ -64,8 +83,7 @@ class GamesViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try{
                 val gameList = gameRepositoryImp.getBestGamesCentury()
-                val games = gameList?.topGames // Extract the list of games from GameList
-                Log.d("GamesViewModel", games.toString())
+                val games = gameList?.topGames
                 _gamesCenturyState.value = GamesCenturyState.Success(games)
             }catch (e: Exception){
                 _gamesCenturyState.value = GamesCenturyState.Error("Error al obtener juegos")
@@ -73,6 +91,35 @@ class GamesViewModel @Inject constructor(
 
         }
     }
+
+    fun getCasualGames(){
+        viewModelScope.launch(Dispatchers.IO) {
+            try{
+                val gameList = gameRepositoryImp.getCasualGames()
+                val games = gameList?.topGames
+                _gamesCasualState.value = GamesCasualState.Success(games)
+            }catch (e: Exception){
+                _gamesCasualState.value = GamesCasualState.Error("Error al obtener juegos")
+            }
+
+        }
+    }
+
+    fun getPlaystationGames(){
+        viewModelScope.launch(Dispatchers.IO) {
+            try{
+                val gameList = gameRepositoryImp.getPlaystationGames()
+                val games = gameList?.topGames
+                _gamesPlaystationState.value = GamesPlaystationState.Success(games)
+            }catch (e: Exception){
+                _gamesPlaystationState.value = GamesPlaystationState.Error("Error al obtener juegos")
+            }
+
+        }
+    }
+
+
+
 
     fun getDetailsGame(id:Int){
         viewModelScope.launch(Dispatchers.IO) {

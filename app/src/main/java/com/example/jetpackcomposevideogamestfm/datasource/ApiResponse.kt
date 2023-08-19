@@ -9,13 +9,18 @@ import retrofit2.http.Path
 
 interface ApiResponse {
 
-    @GET("games?key=059d2d9c924248e483e34d34b0ebb31a&dates=2022-01-01,2022-12-31&ordering=-metacritic")
+    @GET("games?key=abe63b7874204e9bad818928d93b5278&dates=2022-01-01,2022-12-31&ordering=rated")
     suspend fun getBestGamesYear(): Response<GameList>
 
-    @GET("games?key=059d2d9c924248e483e34d34b0ebb31a&dates=2000-01-01,2023-07-31&ordering=-metacritic&page=1")
+    @GET("games?key=abe63b7874204e9bad818928d93b5278&dates=2000-01-01,2023-07-31&ordering=-metacritic")
     suspend fun getBestGamesCentury(): Response<GameList>
 
+    @GET("games?key=abe63b7874204e9bad818928d93b5278&genres=casual&ordering=-metacritic")
+    suspend fun getCasualGames(): Response<GameList>
 
-    @GET("games/{id}?key=059d2d9c924248e483e34d34b0ebb31a")
+    @GET("games?key=abe63b7874204e9bad818928d93b5278&platforms=187,18&ordering=-metacritic")
+    suspend fun getPlaystation4and5Games(): Response<GameList>
+
+    @GET("games/{id}?key=abe63b7874204e9bad818928d93b5278")
     suspend fun getGameById(@Path("id") id: Int): Response<GameDetailsModel>
 }
