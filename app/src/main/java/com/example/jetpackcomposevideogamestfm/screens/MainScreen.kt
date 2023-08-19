@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -41,6 +42,7 @@ import com.example.jetpackcomposevideogamestfm.GamesPlaystationState
 import com.example.jetpackcomposevideogamestfm.GamesViewModel
 import com.example.jetpackcomposevideogamestfm.model.GameModel
 import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
+import com.example.jetpackcomposevideogamestfm.ui.theme.*
 
 @Composable
 fun MainScreen(navController: NavController) {
@@ -49,7 +51,7 @@ fun MainScreen(navController: NavController) {
     Column(
         Modifier
             .fillMaxSize()
-            .background(Color(0xFF445C77))
+            .background(MainBackgroundColor)
     ) {
         Row {
             Button(
@@ -237,7 +239,7 @@ fun BestGames2022(viewModel: GamesViewModel, navController: NavController) {
             }
 
             is GamesState.Error -> {
-                // Error loading games
+                ErrorState()
             }
         }
     }
@@ -258,7 +260,7 @@ fun LoadingState() {
     ) {
         CircularProgressIndicator(
             color = Color.LightGray,
-            strokeWidth = 10.dp
+            strokeWidth = 8.dp
         )
     }
 }
@@ -270,16 +272,8 @@ fun ErrorState() {
     }
 }
 
-
-
 @Composable
 fun GameCardItem(juego: GameModel, navController: NavController) {
-    val color1 = Color(0xFF017E07)
-    val color2 = Color(0xFF7BD119)
-    val color3 = Color(0xFFEBD619)
-    val color4 = Color(0xFFE2A405)
-    val color5 = Color(0xFFDA6D33)
-    val color6 = Color(0xFFF62B1C)
 
     val metacriticColor = when (juego.metacritic) {
         in 94..Int.MAX_VALUE -> color1
@@ -292,7 +286,6 @@ fun GameCardItem(juego: GameModel, navController: NavController) {
 
     Card(
         onClick = {
-            //Go to GameDetails
             navController.navigate(AppScreens.DetailsScreen.createRoute(juego.id.toString()))
         },
         modifier = Modifier
@@ -305,6 +298,7 @@ fun GameCardItem(juego: GameModel, navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(MainCardColor)
         ) {
             // Imagen con un weight de 3
             Card(
@@ -319,29 +313,36 @@ fun GameCardItem(juego: GameModel, navController: NavController) {
                     modifier = Modifier.fillMaxSize()
                 )
             }
-
             Spacer(modifier = Modifier.height(8.dp))
-
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(3f)
                     .padding(horizontal = 16.dp)
+
             ) {
-                Text(text = juego.name)
+                Text(text = juego.name, color = TitleColor)
+
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = juego.released)
+
+                Text(text = juego.released, color = TextColor)
+
                 Spacer(modifier = Modifier.height(4.dp))
+
                 Row(Modifier.fillMaxWidth()) {
-                    Text(text = "${juego.reviews_count} reviews")
+                    Text(text = "${juego.reviews_count} reviews", color = TextColor)
                     Spacer(modifier = Modifier.weight(1F))
+
                     Text(
                         text = juego.metacritic.toString(),
-                        color = metacriticColor
+                        color = metacriticColor,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .background(MainCardColor)
+                            .padding(2.dp)
                     )
-                }
 
+                }
             }
         }
     }
