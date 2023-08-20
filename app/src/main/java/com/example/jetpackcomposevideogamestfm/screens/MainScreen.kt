@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.CircularProgressIndicator
@@ -46,31 +45,18 @@ import com.example.jetpackcomposevideogamestfm.ui.theme.*
 
 @Composable
 fun MainScreen(navController: NavController) {
-    val viewModel: GamesViewModel = hiltViewModel()
 
+    MainContent(navController = navController)
+}
+
+@Composable
+fun MainContent(navController: NavController){
+    val viewModel: GamesViewModel = hiltViewModel()
     Column(
         Modifier
             .fillMaxSize()
             .background(MainBackgroundColor)
     ) {
-        Row {
-            Button(
-                onClick = {
-                    //To FavGamesScreen
-                    navController.navigate(AppScreens.FavGamesScreen.route)
-                }
-            ) {
-                Text(text = "Favs")
-            }
-            Button(
-                onClick = {
-                    //To SearchScreen
-                    navController.navigate(AppScreens.SearchScreen.route)
-                }
-            ) {
-                Text(text = "Search")
-            }
-        }
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.jetpackcomposevideogamestfm.R
 import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
+import com.example.jetpackcomposevideogamestfm.ui.theme.MainBackgroundColor
+import com.example.jetpackcomposevideogamestfm.ui.theme.MenuColor
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -47,7 +49,7 @@ fun LoginScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
+            .background(MainBackgroundColor)
     ) {
         val isLoading: Boolean by remember { mutableStateOf(false) }
 
@@ -61,7 +63,7 @@ fun LoginScreen(navController: NavController) {
             }
         } else {
             Header(Modifier.align(Alignment.TopEnd))
-            Body(Modifier.align(Alignment.Center), navController)
+            Body(Modifier.align(Alignment.Center).padding(8.dp), navController)
             Footer(Modifier.align(Alignment.BottomCenter))
         }
     }
@@ -191,13 +193,13 @@ fun LoginDivider() {
 @Composable
 fun LoginButton(loginEnable: Boolean, navController: NavController) {
     Button(
-        onClick = {//Ir a MainScreen
-            navController.navigate(AppScreens.MainScreen.route)
+        onClick = {
+            navController.navigate(AppScreens.ScaffoldScreens.route)
         },
         enabled = loginEnable,
         modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color(0xFF2F9DEC),
+            backgroundColor = MenuColor,
             disabledBackgroundColor = Color(0xFF8ACEF8),
             contentColor = Color.White,
             disabledContentColor = Color.White

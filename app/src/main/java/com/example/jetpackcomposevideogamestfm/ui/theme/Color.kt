@@ -13,11 +13,11 @@ val Pink40 = Color(0xFF7D5260)
 
 
 //Main colors
-val MainBackgroundColor = Color(0xFF21394D)
+val MainBackgroundColor = Color(0xFF2A465E)
 val MainCardColor = Color(0xFF012038)
 val TitleColor = Color(0xFFFFFFFF)
 val TextColor = Color(0xFFA29FA0)
-val MenuColor = Color(0xFF2D70A5)
+val MenuColor = Color(0xFF095B9C)
 
 
 //Rating colors

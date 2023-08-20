@@ -5,29 +5,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.jetpackcomposevideogamestfm.screens.MainScreen
 import com.example.jetpackcomposevideogamestfm.screens.LoginScreen
-import com.example.jetpackcomposevideogamestfm.screens.FavGamesScreen
 import com.example.jetpackcomposevideogamestfm.screens.DetailScreen
-import com.example.jetpackcomposevideogamestfm.screens.SearchScreen
+import com.example.jetpackcomposevideogamestfm.screens.ScaffoldScreens
 
 @Composable
 fun AppNavigation() {
 
     val navigationController = rememberNavController()
 
-    NavHost(navController = navigationController, startDestination = AppScreens.MainScreen.route){
+    NavHost(navController = navigationController, startDestination = AppScreens.ScaffoldScreens.route){
         composable(route = AppScreens.LoginScreen.route){
             LoginScreen(navigationController)
         }
-        composable(route = AppScreens.MainScreen.route){
-            MainScreen(navigationController)
-        }
-        composable(route = AppScreens.FavGamesScreen.route){
-            FavGamesScreen(navigationController)
-        }
-        composable(route = AppScreens.SearchScreen.route){
-            SearchScreen(navigationController)
+        composable(route = AppScreens.ScaffoldScreens.route){
+            ScaffoldScreens(navigationController)
         }
         composable(
             route = AppScreens.DetailsScreen.route,

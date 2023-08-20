@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -53,7 +54,7 @@ fun DetailScreen(navController: NavController, id: String?) {
 fun GetGameDetails(viewModel: GamesViewModel, id: String?, navController: NavController) {
     val detailsState by remember { viewModel.detailsState }
 
-    Box {
+    Box(modifier = Modifier.background(MainCardColor).fillMaxSize()) {
         when (detailsState) {
             is DetailsState.Loading -> {
                 LoadingState()
@@ -81,7 +82,7 @@ fun GetGameDetails(viewModel: GamesViewModel, id: String?, navController: NavCon
 
 @Composable
 fun ShowGameDetails(juego: GameDetailsModel?, navController: NavController) {
-    Column(modifier = Modifier.background(MainCardColor)) {
+    Column {
 
         //Main Image
         Image(

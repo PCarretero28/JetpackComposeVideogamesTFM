@@ -9,7 +9,7 @@ import retrofit2.http.Path
 
 interface ApiResponse {
 
-    @GET("games?key=abe63b7874204e9bad818928d93b5278&dates=2022-01-01,2022-12-31&ordering=rated")
+    @GET("games?key=abe63b7874204e9bad818928d93b5278&dates=2022-01-01,2022-12-31&ordering=-metacritic")
     suspend fun getBestGamesYear(): Response<GameList>
 
     @GET("games?key=abe63b7874204e9bad818928d93b5278&dates=2000-01-01,2023-07-31&ordering=-metacritic")
