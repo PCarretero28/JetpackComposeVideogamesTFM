@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.jetpackcomposevideogamestfm.R
 import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
-import com.example.jetpackcomposevideogamestfm.ui.theme.MainBackgroundColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.MenuColor
 
 @Composable
@@ -49,7 +48,7 @@ fun LoginScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MainBackgroundColor)
+            .background(Color.White)
     ) {
         val isLoading: Boolean by remember { mutableStateOf(false) }
 
@@ -62,7 +61,7 @@ fun LoginScreen(navController: NavController) {
                 CircularProgressIndicator()
             }
         } else {
-            Header(Modifier.align(Alignment.TopEnd))
+            Header(Modifier.align(Alignment.TopStart))
             Body(Modifier.align(Alignment.Center).padding(8.dp), navController)
             Footer(Modifier.align(Alignment.BottomCenter))
         }
@@ -101,7 +100,7 @@ fun Footer(modifier: Modifier) {
 @Composable
 fun SignUp() {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        Text(text = "Don´t have an account?", fontSize = 12.sp, color = Color(0xFFB5B5B5))
+        Text(text = "Create your new account", fontSize = 12.sp, color = Color(0xFFB5B5B5))
         Text(
             text = "Sign up",
             modifier = Modifier.padding(horizontal = 8.dp),
@@ -266,7 +265,7 @@ fun Email(email: String, onTextChanged: (String) -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         maxLines = 1,
-        placeholder = { Text(text = "Phone number, username or email") },
+        placeholder = { Text(text = "Phone number or email") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFB2B2B2),

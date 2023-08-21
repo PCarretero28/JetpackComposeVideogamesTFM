@@ -50,7 +50,7 @@ fun MainScreen(navController: NavController) {
 }
 
 @Composable
-fun MainContent(navController: NavController){
+fun MainContent(navController: NavController) {
     val viewModel: GamesViewModel = hiltViewModel()
     Column(
         Modifier
@@ -101,7 +101,7 @@ fun PlaystationGames(viewModel: GamesViewModel, navController: NavController) {
                 val games = (gamesState as GamesPlaystationState.Success).games
                 LazyRow {
                     items(games!!.size) {
-                        GameCardItem(games[it], navController)
+                        GameCardItem(games[it], navController, false)
                     }
                 }
             }
@@ -140,7 +140,7 @@ fun CasualGames(viewModel: GamesViewModel, navController: NavController) {
                 val games = (gamesState as GamesCasualState.Success).games
                 LazyRow {
                     items(games!!.size) {
-                        GameCardItem(games[it], navController)
+                        GameCardItem(games[it], navController, false)
                     }
                 }
             }
@@ -179,7 +179,7 @@ fun BestGamesCentury(viewModel: GamesViewModel, navController: NavController) {
                 val games = (gamesState as GamesCenturyState.Success).games
                 LazyRow {
                     items(games!!.size) {
-                        GameCardItem(games[it], navController)
+                        GameCardItem(games[it], navController, false)
                     }
                 }
             }
@@ -219,7 +219,7 @@ fun BestGames2022(viewModel: GamesViewModel, navController: NavController) {
                 val games = (gamesState as GamesState.Success).games
                 LazyRow {
                     items(games!!.size) {
-                        GameCardItem(games[it], navController)
+                        GameCardItem(games[it], navController, false)
                     }
                 }
             }
@@ -259,7 +259,18 @@ fun ErrorState() {
 }
 
 @Composable
-fun GameCardItem(juego: GameModel, navController: NavController) {
+fun GameCardItem(juego: GameModel, navController: NavController, isExpanded: Boolean) {
+
+    val heightCard: Int
+    val maxWidthCard : Int
+
+    if (isExpanded) {
+        heightCard = 280
+        maxWidthCard = 380
+    } else {
+        heightCard = 250
+        maxWidthCard = 250
+    }
 
     val metacriticColor = when (juego.metacritic) {
         in 94..Int.MAX_VALUE -> color1
@@ -276,8 +287,8 @@ fun GameCardItem(juego: GameModel, navController: NavController) {
         },
         modifier = Modifier
             .padding(8.dp)
-            .height(250.dp)
-            .widthIn(max = 250.dp, min = 150.dp),
+            .height(heightCard.dp)
+            .widthIn(max = maxWidthCard.dp, min = 150.dp),
         elevation = 8.dp,
         shape = RoundedCornerShape(8.dp)
     ) {

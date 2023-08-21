@@ -9,9 +9,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -28,13 +28,13 @@ import com.example.jetpackcomposevideogamestfm.ui.theme.MenuColor
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ScaffoldScreens(navController: NavController) {
-    var currentScreen by remember { mutableStateOf(Screen.Home) }
+    var currentScreen by remember { mutableStateOf(Screen.Search) }
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
         topBar = {
             MyTopAppBar(
-                onClickDrawer = {
+                onClickIcon = {
                     navController.navigate(AppScreens.LoginScreen.route)
                 }
             )
@@ -53,16 +53,16 @@ fun ScaffoldScreens(navController: NavController) {
 
 @Composable
 fun MyTopAppBar(
-    onClickDrawer:() -> Unit
+    onClickIcon:(String) -> Unit
 ) {
     TopAppBar(
         title = { Text(text = "RAWG Games") },
         backgroundColor = MenuColor,
         contentColor = Color.White,
 
-        navigationIcon = {
-            IconButton(onClick = { onClickDrawer() }) {
-                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "login")
+        actions = {
+            IconButton(onClick = { onClickIcon("Log out") }) {
+                Icon(imageVector = Icons.Default.Logout, contentDescription = "login")
             }
         },
     )

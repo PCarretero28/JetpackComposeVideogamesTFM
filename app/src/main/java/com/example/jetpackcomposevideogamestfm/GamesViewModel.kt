@@ -1,6 +1,5 @@
 package com.example.jetpackcomposevideogamestfm
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -44,7 +43,11 @@ sealed class DetailsState {
     data class Error(val message: String) : DetailsState()
 }
 
-
+sealed class GamesByNameState {
+    object Loading : GamesByNameState()
+    data class Success(val games: List<GameModel>?) : GamesByNameState()
+    data class Error(val message: String) : GamesByNameState()
+}
 
 @HiltViewModel
 class GamesViewModel @Inject constructor(
@@ -65,6 +68,9 @@ class GamesViewModel @Inject constructor(
 
     private val _detailsState = mutableStateOf<DetailsState>(DetailsState.Loading)
     val detailsState: State<DetailsState> = _detailsState
+
+    private val _gamesByNameState = mutableStateOf<GamesByNameState>(GamesByNameState.Loading)
+    val gamesByNameState: State<GamesByNameState> = _gamesByNameState
 
     fun getBestGamesOfTheYear(){
         viewModelScope.launch(Dispatchers.IO) {
@@ -118,14 +124,24 @@ class GamesViewModel @Inject constructor(
         }
     }
 
+    fun getGamesByName(name:String){
+        viewModelScope.launch(Dispatchers.IO) {
+            try{
+                val gameList = gameRepositoryImp.getGamesByName(name)
+                val games = gameList?.topGames
+                _gamesByNameState.value = GamesByNameState.Success(games)
+            }catch (e: Exception){
+                _gamesByNameState.value = GamesByNameState.Error("Error al obtener juegos")
+            }
 
+        }
+    }
 
 
     fun getDetailsGame(id:Int){
         viewModelScope.launch(Dispatchers.IO) {
             try{
                 val gameDetails = gameRepositoryImp.getGameById(id)
-                Log.d("GamesViewModel", gameDetails.toString())
                 _detailsState.value = DetailsState.Success(gameDetails)
             }catch (e:Exception){
                 _detailsState.value = DetailsState.Error("Error al obtener detalles de juego")

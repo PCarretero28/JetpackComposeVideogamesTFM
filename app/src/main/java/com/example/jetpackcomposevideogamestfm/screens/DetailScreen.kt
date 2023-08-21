@@ -75,7 +75,7 @@ fun GetGameDetails(viewModel: GamesViewModel, id: String?, navController: NavCon
         }
     }
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(true) {
         viewModel.getDetailsGame(id!!.toInt())
     }
 }
