@@ -265,10 +265,10 @@ fun GameCardItem(juego: GameModel, navController: NavController, isExpanded: Boo
     val maxWidthCard : Int
 
     if (isExpanded) {
-        heightCard = 280
+        heightCard = 260
         maxWidthCard = 380
     } else {
-        heightCard = 250
+        heightCard = 230
         maxWidthCard = 250
     }
 
