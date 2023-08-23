@@ -5,6 +5,6 @@ data class GameModel (
     val name: String,
     val released: String,
     val background_image: String,
-    val metacritic: Int,
+    val metacritic: Int?,
     val reviews_count: Int
 )

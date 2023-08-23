@@ -17,6 +17,7 @@ import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,6 +40,7 @@ import com.example.jetpackcomposevideogamestfm.model.DeveloperModel
 import com.example.jetpackcomposevideogamestfm.model.GameDetailsModel
 import com.example.jetpackcomposevideogamestfm.model.GenreModel
 import com.example.jetpackcomposevideogamestfm.model.PlatformModel
+import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
 import com.example.jetpackcomposevideogamestfm.ui.theme.MainCardColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.MenuColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.TextColor
@@ -54,7 +56,9 @@ fun DetailScreen(navController: NavController, id: String?) {
 fun GetGameDetails(viewModel: GamesViewModel, id: String?, navController: NavController) {
     val detailsState by remember { viewModel.detailsState }
 
-    Box(modifier = Modifier.background(MainCardColor).fillMaxSize()) {
+    Box(modifier = Modifier
+        .background(MainCardColor)
+        .fillMaxSize()) {
         when (detailsState) {
             is DetailsState.Loading -> {
                 LoadingState()
@@ -87,7 +91,7 @@ fun ShowGameDetails(juego: GameDetailsModel?, navController: NavController) {
         //Main Image
         Image(
             painter = rememberAsyncImagePainter(model = juego!!.background_image),
-            contentDescription = "",
+            contentDescription = "${juego.name} main image",
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp),
@@ -132,17 +136,31 @@ fun ShowGameDetails(juego: GameDetailsModel?, navController: NavController) {
 
             //Add to database
             Box(Modifier.fillMaxWidth()){
-                AddToFavs(juego, modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentSize(Alignment.Center)
+                AddToFavs(juego,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                        .wrapContentSize(Alignment.Center),
+                    navController
                 )
             }
 
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            //Row of images
+            //Extra image
+            Card {
+                Image(
+                    painter = rememberAsyncImagePainter(model = juego.background_image_additional),
+                    contentDescription = "extra image",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    contentScale = ContentScale.Crop
+                )
+            }
 
+            Spacer(modifier = Modifier.height(8.dp))
 
             //Reviews and Metacritic
             Row {
@@ -162,11 +180,12 @@ fun ShowGameDetails(juego: GameDetailsModel?, navController: NavController) {
 }
 
 @Composable
-fun AddToFavs(juego: GameDetailsModel?, modifier: Modifier) {
+fun AddToFavs(juego: GameDetailsModel?, modifier: Modifier, navController: NavController) {
     Box(modifier = modifier){
         FloatingActionButton(
-            onClick = { //Add to Database
-
+            onClick = {
+                //Add juego to Database
+                navController.navigate(AppScreens.ScaffoldScreens.route)
             },
             backgroundColor = MenuColor,
             contentColor = Color.White

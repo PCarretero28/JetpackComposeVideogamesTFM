@@ -66,7 +66,7 @@ fun SearchGame(search: String, onTextChanged: (String) -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         value = search,
         onValueChange = { newText ->
-                onTextChanged(newText)
+            onTextChanged(newText)
         },
         singleLine = true,
         maxLines = 1,

@@ -45,13 +45,8 @@ import com.example.jetpackcomposevideogamestfm.ui.theme.*
 
 @Composable
 fun MainScreen(navController: NavController) {
-
-    MainContent(navController = navController)
-}
-
-@Composable
-fun MainContent(navController: NavController) {
     val viewModel: GamesViewModel = hiltViewModel()
+
     Column(
         Modifier
             .fillMaxSize()
@@ -60,7 +55,7 @@ fun MainContent(navController: NavController) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp)
+                .padding(start = 4.dp, end = 4.dp, bottom = 32.dp)
         ) {
             item {
                 BestGames2022(viewModel, navController)
@@ -75,6 +70,44 @@ fun MainContent(navController: NavController) {
                 CasualGames(viewModel, navController)
             }
         }
+    }
+}
+@Composable
+fun CasualGames(viewModel: GamesViewModel, navController: NavController) {
+    val gamesState by remember { viewModel.gamesCasualState }
+
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            color = Color.White,
+            text = "Casual Games"
+        )
+
+        when (gamesState) {
+            is GamesCasualState.Loading -> {
+                LoadingState()
+            }
+
+            is GamesCasualState.Success -> {
+                val games = (gamesState as GamesCasualState.Success).games
+                LazyRow {
+                    items(games!!.size) {
+                        GameCardItem(games[it], navController, false)
+                    }
+                }
+            }
+
+            is GamesCasualState.Error -> {
+                ErrorState()
+            }
+        }
+    }
+
+    LaunchedEffect(true) {
+        viewModel.getCasualGames()
     }
 }
 
@@ -114,45 +147,6 @@ fun PlaystationGames(viewModel: GamesViewModel, navController: NavController) {
 
     LaunchedEffect(true) {
         viewModel.getPlaystationGames()
-    }
-}
-
-@Composable
-fun CasualGames(viewModel: GamesViewModel, navController: NavController) {
-    val gamesState by remember { viewModel.gamesCasualState }
-
-    Column(
-        modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth()
-    ) {
-        Text(
-            color = Color.White,
-            text = "Casual Games"
-        )
-
-        when (gamesState) {
-            is GamesCasualState.Loading -> {
-                LoadingState()
-            }
-
-            is GamesCasualState.Success -> {
-                val games = (gamesState as GamesCasualState.Success).games
-                LazyRow {
-                    items(games!!.size) {
-                        GameCardItem(games[it], navController, false)
-                    }
-                }
-            }
-
-            is GamesCasualState.Error -> {
-                ErrorState()
-            }
-        }
-    }
-
-    LaunchedEffect(true) {
-        viewModel.getCasualGames()
     }
 }
 
@@ -272,13 +266,17 @@ fun GameCardItem(juego: GameModel, navController: NavController, isExpanded: Boo
         maxWidthCard = 250
     }
 
-    val metacriticColor = when (juego.metacritic) {
-        in 94..Int.MAX_VALUE -> color1
-        in 85..93 -> color2
-        in 71..84 -> color3
-        in 61..70 -> color4
-        in 51..60 -> color5
-        else -> color6
+    var metacriticColor = Color.White
+
+    if(juego.metacritic != null){
+        metacriticColor = when (juego.metacritic) {
+            in 94..Int.MAX_VALUE -> color1
+            in 85..93 -> color2
+            in 71..84 -> color3
+            in 61..70 -> color4
+            in 51..60 -> color5
+            else -> color6
+        }
     }
 
     Card(
@@ -330,15 +328,25 @@ fun GameCardItem(juego: GameModel, navController: NavController, isExpanded: Boo
                     Text(text = "${juego.reviews_count} reviews", color = TextColor)
                     Spacer(modifier = Modifier.weight(1F))
 
-                    Text(
-                        text = juego.metacritic.toString(),
-                        color = metacriticColor,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .background(MainCardColor)
-                            .padding(2.dp)
-                    )
-
+                    if (juego.metacritic != null){
+                        Text(
+                            text = juego.metacritic.toString(),
+                            color = metacriticColor,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .background(MainCardColor)
+                                .padding(2.dp)
+                        )
+                    }else{
+                        Text(
+                            text = "X",
+                            color = metacriticColor,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .background(MainCardColor)
+                                .padding(2.dp)
+                        )
+                    }
                 }
             }
         }

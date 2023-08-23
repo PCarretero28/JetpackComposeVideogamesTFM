@@ -25,16 +25,17 @@ sealed class GamesCenturyState {
     data class Error(val message: String) : GamesCenturyState()
 }
 
-sealed class GamesCasualState {
-    object Loading : GamesCasualState()
-    data class Success(val games: List<GameModel>?) : GamesCasualState()
-    data class Error(val message: String) : GamesCasualState()
-}
-
 sealed class GamesPlaystationState {
     object Loading : GamesPlaystationState()
     data class Success(val games: List<GameModel>?) : GamesPlaystationState()
     data class Error(val message: String) : GamesPlaystationState()
+}
+
+
+sealed class GamesCasualState {
+    object Loading : GamesCasualState()
+    data class Success(val games: List<GameModel>?) : GamesCasualState()
+    data class Error(val message: String) : GamesCasualState()
 }
 
 sealed class DetailsState {
@@ -60,11 +61,11 @@ class GamesViewModel @Inject constructor(
     private val _gamesCenturyState = mutableStateOf<GamesCenturyState>(GamesCenturyState.Loading)
     val gamesCenturyState: State<GamesCenturyState> = _gamesCenturyState
 
-    private val _gamesCasualState = mutableStateOf<GamesCasualState>(GamesCasualState.Loading)
-    val gamesCasualState: State<GamesCasualState> = _gamesCasualState
-
     private val _gamesPlaystationState = mutableStateOf<GamesPlaystationState>(GamesPlaystationState.Loading)
     val gamesPlaystationState: State<GamesPlaystationState> = _gamesPlaystationState
+
+    private val _gamesCasualState = mutableStateOf<GamesCasualState>(GamesCasualState.Loading)
+    val gamesCasualState: State<GamesCasualState> = _gamesCasualState
 
     private val _detailsState = mutableStateOf<DetailsState>(DetailsState.Loading)
     val detailsState: State<DetailsState> = _detailsState
@@ -98,6 +99,19 @@ class GamesViewModel @Inject constructor(
         }
     }
 
+    fun getPlaystationGames(){
+        viewModelScope.launch(Dispatchers.IO) {
+            try{
+                val gameList = gameRepositoryImp.getPlaystationGames()
+                val games = gameList?.topGames
+                _gamesPlaystationState.value = GamesPlaystationState.Success(games)
+            }catch (e: Exception){
+                _gamesPlaystationState.value = GamesPlaystationState.Error("Error al obtener juegos")
+            }
+
+        }
+    }
+
     fun getCasualGames(){
         viewModelScope.launch(Dispatchers.IO) {
             try{
@@ -111,18 +125,6 @@ class GamesViewModel @Inject constructor(
         }
     }
 
-    fun getPlaystationGames(){
-        viewModelScope.launch(Dispatchers.IO) {
-            try{
-                val gameList = gameRepositoryImp.getPlaystationGames()
-                val games = gameList?.topGames
-                _gamesPlaystationState.value = GamesPlaystationState.Success(games)
-            }catch (e: Exception){
-                _gamesPlaystationState.value = GamesPlaystationState.Error("Error al obtener juegos")
-            }
-
-        }
-    }
 
     fun getGamesByName(name:String){
         viewModelScope.launch(Dispatchers.IO) {
