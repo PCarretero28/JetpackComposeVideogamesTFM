@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -18,6 +20,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,11 +33,13 @@ import androidx.navigation.NavController
 import com.example.jetpackcomposevideogamestfm.GamesByNameState
 import com.example.jetpackcomposevideogamestfm.GamesViewModel
 import com.example.jetpackcomposevideogamestfm.ui.theme.MainBackgroundColor
+import com.example.jetpackcomposevideogamestfm.ui.theme.MenuColor
 
 @Composable
 fun SearchScreen(navController: NavController) {
     val viewModel: GamesViewModel = hiltViewModel()
     var search: String by remember { mutableStateOf("") }
+    val isSearchPressed : Boolean by viewModel.isSearchPressed.observeAsState(false)
 
     Column(
         modifier = Modifier
@@ -43,14 +48,23 @@ fun SearchScreen(navController: NavController) {
             .padding(horizontal = 4.dp)
     ) {
         // TextField de búsqueda
-        SearchGame(search) {
+        SearchGame(search,
+            viewModel) {
             search = it
         }
 
+        //Boton de búsqueda
+        SearchButton(search,
+            viewModel)
+
         // Función que muestra la lista
-        if (search.length > 3) {
+        if (isSearchPressed) {
             GamesFound(viewModel, navController, search)
         }
+    }
+
+    if(search.isEmpty()){
+        viewModel.onRestartList()
     }
 
     LaunchedEffect(search) {
@@ -61,7 +75,30 @@ fun SearchScreen(navController: NavController) {
 }
 
 @Composable
-fun SearchGame(search: String, onTextChanged: (String) -> Unit) {
+fun SearchButton(search:String, viewModel: GamesViewModel) {
+    val enabled: Boolean = search.length > 3
+
+    Button(
+        onClick = {
+            viewModel.onRestartList()
+            viewModel.onSearchGames()
+        },
+        enabled = enabled,
+        modifier = Modifier.fillMaxWidth(),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = MenuColor,
+            disabledBackgroundColor = Color(0xFF8ACEF8),
+            contentColor = Color.White,
+            disabledContentColor = Color.White
+        ))
+    {
+        Text(text = "Search!")
+    }
+
+}
+
+@Composable
+fun SearchGame(search: String, viewModel: GamesViewModel, onTextChanged: (String) -> Unit) {
     TextField(
         modifier = Modifier.fillMaxWidth(),
         value = search,
@@ -84,6 +121,7 @@ fun SearchGame(search: String, onTextChanged: (String) -> Unit) {
                 contentDescription = "clear text",
                 modifier = Modifier
                     .clickable {
+                        viewModel.onRestartList()
                         onTextChanged("")
                     }
             )

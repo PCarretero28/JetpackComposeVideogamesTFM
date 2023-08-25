@@ -1,5 +1,6 @@
 package com.example.jetpackcomposevideogamestfm.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -45,6 +47,7 @@ import com.example.jetpackcomposevideogamestfm.ui.theme.MainCardColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.MenuColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.TextColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.TitleColor
+
 
 @Composable
 fun DetailScreen(navController: NavController, id: String?) {
@@ -86,8 +89,8 @@ fun GetGameDetails(viewModel: GamesViewModel, id: String?, navController: NavCon
 
 @Composable
 fun ShowGameDetails(juego: GameDetailsModel?, navController: NavController) {
-    Column {
 
+    Column {
         //Main Image
         Image(
             painter = rememberAsyncImagePainter(model = juego!!.background_image),
@@ -180,11 +183,21 @@ fun ShowGameDetails(juego: GameDetailsModel?, navController: NavController) {
 }
 
 @Composable
-fun AddToFavs(juego: GameDetailsModel?, modifier: Modifier, navController: NavController) {
+fun AddToFavs(game: GameDetailsModel?, modifier: Modifier, navController: NavController) {
+    val context = LocalContext.current
+
+
     Box(modifier = modifier){
         FloatingActionButton(
             onClick = {
-                //Add juego to Database
+                //Add game to Database
+
+
+                //Game id is already in database
+
+
+                Toast.makeText(context, "Has añadido ${game!!.name} con éxito", Toast.LENGTH_SHORT).show()
+
                 navController.navigate(AppScreens.ScaffoldScreens.route)
             },
             backgroundColor = MenuColor,

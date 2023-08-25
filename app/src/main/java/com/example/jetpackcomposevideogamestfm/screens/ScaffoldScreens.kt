@@ -28,7 +28,7 @@ import com.example.jetpackcomposevideogamestfm.ui.theme.MenuColor
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ScaffoldScreens(navController: NavController) {
-    var currentScreen by remember { mutableStateOf(Screen.Search) }
+    var currentScreen by remember { mutableStateOf(Screen.Home) }
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -44,9 +44,9 @@ fun ScaffoldScreens(navController: NavController) {
     ) {
         // Contenido de la pantalla actual
         when (currentScreen) {
+            Screen.Search -> SearchScreen(navController)
             Screen.Home -> MainScreen(navController)
             Screen.Favorites -> FavGamesScreen(navController)
-            Screen.Search -> SearchScreen(navController)
         }
     }
 }
@@ -74,20 +74,6 @@ fun MyBottomNavigation(currentScreen: Screen, onScreenSelected: (Screen) -> Unit
 
     BottomNavigation(backgroundColor = MenuColor, contentColor = Color.White) {
         BottomNavigationItem(
-            selected = currentScreen == Screen.Home,
-            onClick = {
-                index = Screen.Home.ordinal
-                onScreenSelected(Screen.Home)
-            },
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = "home"
-                )
-            },
-            label = { Text(text = "Home") }
-        )
-        BottomNavigationItem(
             selected = currentScreen == Screen.Search,
             onClick = {
                 index = Screen.Search.ordinal
@@ -100,6 +86,20 @@ fun MyBottomNavigation(currentScreen: Screen, onScreenSelected: (Screen) -> Unit
                 )
             },
             label = { Text(text = "Search") }
+        )
+        BottomNavigationItem(
+            selected = currentScreen == Screen.Home,
+            onClick = {
+                index = Screen.Home.ordinal
+                onScreenSelected(Screen.Home)
+            },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = "home"
+                )
+            },
+            label = { Text(text = "Home") }
         )
         BottomNavigationItem(
             selected = currentScreen == Screen.Favorites,
@@ -115,7 +115,6 @@ fun MyBottomNavigation(currentScreen: Screen, onScreenSelected: (Screen) -> Unit
             },
             label = { Text(text = "Favorites") }
         )
-
     }
 }
 

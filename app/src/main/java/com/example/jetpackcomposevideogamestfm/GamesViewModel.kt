@@ -2,6 +2,8 @@ package com.example.jetpackcomposevideogamestfm
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jetpackcomposevideogamestfm.model.GameDetailsModel
@@ -72,6 +74,17 @@ class GamesViewModel @Inject constructor(
 
     private val _gamesByNameState = mutableStateOf<GamesByNameState>(GamesByNameState.Loading)
     val gamesByNameState: State<GamesByNameState> = _gamesByNameState
+
+    private val _isSearchPressed = MutableLiveData<Boolean>()
+    val isSearchPressed: LiveData<Boolean> = _isSearchPressed
+
+    fun onSearchGames(){
+        _isSearchPressed.value = true
+    }
+
+    fun onRestartList(){
+        _isSearchPressed.value = false
+    }
 
     fun getBestGamesOfTheYear(){
         viewModelScope.launch(Dispatchers.IO) {
