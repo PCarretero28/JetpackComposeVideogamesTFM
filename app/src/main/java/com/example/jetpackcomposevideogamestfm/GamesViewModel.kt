@@ -40,6 +40,12 @@ sealed class GamesCasualState {
     data class Error(val message: String) : GamesCasualState()
 }
 
+sealed class GamesBethesdaState {
+    object Loading : GamesBethesdaState()
+    data class Success(val games: List<GameModel>?) : GamesBethesdaState()
+    data class Error(val message: String) : GamesBethesdaState()
+}
+
 sealed class DetailsState {
     object Loading : DetailsState()
     data class Success(val game: GameDetailsModel?) : DetailsState()
@@ -68,6 +74,9 @@ class GamesViewModel @Inject constructor(
 
     private val _gamesCasualState = mutableStateOf<GamesCasualState>(GamesCasualState.Loading)
     val gamesCasualState: State<GamesCasualState> = _gamesCasualState
+
+    private val _gamesBethesdaState = mutableStateOf<GamesBethesdaState>(GamesBethesdaState.Loading)
+    val gamesBethesdaState: State<GamesBethesdaState> = _gamesBethesdaState
 
     private val _detailsState = mutableStateOf<DetailsState>(DetailsState.Loading)
     val detailsState: State<DetailsState> = _detailsState
@@ -133,6 +142,19 @@ class GamesViewModel @Inject constructor(
                 _gamesCasualState.value = GamesCasualState.Success(games)
             }catch (e: Exception){
                 _gamesCasualState.value = GamesCasualState.Error("Error al obtener juegos")
+            }
+
+        }
+    }
+
+    fun getBethesdaGames(){
+        viewModelScope.launch(Dispatchers.IO) {
+            try{
+                val gameList = gameRepositoryImp.getBethesdaGames()
+                val games = gameList?.topGames
+                _gamesBethesdaState.value = GamesBethesdaState.Success(games)
+            }catch (e: Exception){
+                _gamesBethesdaState.value = GamesBethesdaState.Error("Error al obtener juegos")
             }
 
         }

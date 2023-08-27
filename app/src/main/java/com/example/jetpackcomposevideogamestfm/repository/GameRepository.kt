@@ -13,6 +13,7 @@ interface GameRepository {
     suspend fun getBestGamesCentury(): GameList?
     suspend fun getCasualGames(): GameList?
     suspend fun getPlaystationGames(): GameList?
+    suspend fun getBethesdaGames(): GameList?
     suspend fun getGamesByName(name:String): GameList?
 
 }
@@ -38,6 +39,11 @@ class GameRepositoryImp @Inject constructor(
 
     override suspend fun getPlaystationGames(): GameList? {
         val response = dataSource.getPlaystation4and5Games()
+        return response.body()
+    }
+
+    override suspend fun getBethesdaGames(): GameList? {
+        val response = dataSource.getBethesdaGames()
         return response.body()
     }
 

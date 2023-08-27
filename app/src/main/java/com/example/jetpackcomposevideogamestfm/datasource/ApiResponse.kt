@@ -25,9 +25,12 @@ interface ApiResponse {
     @GET("games?key=abe63b7874204e9bad818928d93b5278&genres=casual&ordering=-added")
     suspend fun getCasualGames(): Response<GameList>
 
+    @GET("games?key=abe63b7874204e9bad818928d93b5278&developers=4&ordering=-metacritic")
+    suspend fun getBethesdaGames(): Response<GameList>
 
 
-    //List of games by name
+
+    //Search games by name
     @GET("games?key=abe63b7874204e9bad818928d93b5278&search_exact=true")
     suspend fun getGamesByName(@Query("search") name:String): Response<GameList>
 

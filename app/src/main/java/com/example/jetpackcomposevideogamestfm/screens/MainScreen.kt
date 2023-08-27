@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.jetpackcomposevideogamestfm.GamesBethesdaState
 import com.example.jetpackcomposevideogamestfm.GamesCasualState
 import com.example.jetpackcomposevideogamestfm.GamesState
 import com.example.jetpackcomposevideogamestfm.GamesCenturyState
@@ -69,9 +70,52 @@ fun MainScreen(navController: NavController) {
             item {
                 CasualGames(viewModel, navController)
             }
+            item {
+                BethesdaGames(viewModel, navController)
+            }
         }
     }
 }
+
+@Composable
+fun BethesdaGames(viewModel: GamesViewModel, navController: NavController) {
+    val gamesState by remember { viewModel.gamesBethesdaState }
+
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            color = Color.White,
+            text = "Bethesda Softworks Games"
+        )
+
+        when (gamesState) {
+            is GamesBethesdaState.Loading -> {
+                LoadingState()
+            }
+
+            is GamesBethesdaState.Success -> {
+                val games = (gamesState as GamesBethesdaState.Success).games
+                LazyRow {
+                    items(games!!.size) {
+                        GameCardItem(games[it], navController, false)
+                    }
+                }
+            }
+
+            is GamesBethesdaState.Error -> {
+                ErrorState()
+            }
+        }
+    }
+
+    LaunchedEffect(true) {
+        viewModel.getBethesdaGames()
+    }
+}
+
 @Composable
 fun CasualGames(viewModel: GamesViewModel, navController: NavController) {
     val gamesState by remember { viewModel.gamesCasualState }
@@ -235,6 +279,7 @@ fun BestGames2022(viewModel: GamesViewModel, navController: NavController) {
 fun LoadingState() {
     Box(
         modifier = Modifier
+            .padding(90.dp)
             .fillMaxSize()
             .wrapContentSize(Alignment.Center)
     ) {
