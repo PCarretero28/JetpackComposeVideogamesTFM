@@ -21,6 +21,7 @@ val TextColor = Color(0xFFA29FA0)
 val MenuColor = Color(0xFF095B9C)
 
 
+
 //Rating colors
 val color1 = Color(0xFF017E07)
 val color2 = Color(0xFF7BD119)

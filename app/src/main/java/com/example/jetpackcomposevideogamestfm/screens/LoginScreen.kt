@@ -62,7 +62,7 @@ fun LoginScreen(navController: NavController) {
             }
         } else {
             Header(Modifier.align(Alignment.TopStart))
-            Body(Modifier.align(Alignment.Center).padding(8.dp), navController)
+            Body(Modifier.align(Alignment.Center).padding(16.dp), navController)
             Footer(Modifier.align(Alignment.BottomCenter))
         }
     }
@@ -234,7 +234,7 @@ fun Password(password: String, onTextChanged: (String) -> Unit) {
         placeholder = { Text(text = "Password") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xFFB2B2B2),
+            textColor = Color(0xFF777777),
             backgroundColor = Color(0xFFFAFAFA),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
@@ -268,7 +268,7 @@ fun Email(email: String, onTextChanged: (String) -> Unit) {
         placeholder = { Text(text = "Phone number or email") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xFFB2B2B2),
+            textColor = Color(0xFF777777),
             backgroundColor = Color(0xFFFAFAFA),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
@@ -279,9 +279,9 @@ fun Email(email: String, onTextChanged: (String) -> Unit) {
 @Composable
 fun ImageLogo(modifier: Modifier) {
     Image(
-        painter = painterResource(id = R.drawable.backwhiteicon),
+        painter = painterResource(id = R.drawable.pngrawgpng),
         contentDescription = "Logo App",
-        modifier = modifier.size(144.dp)
+        modifier = modifier.size(160.dp)
     )
 }
 
