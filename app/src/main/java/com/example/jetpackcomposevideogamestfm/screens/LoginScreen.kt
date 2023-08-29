@@ -35,9 +35,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.jetpackcomposevideogamestfm.R
 import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
 import com.example.jetpackcomposevideogamestfm.ui.theme.MenuColor
@@ -68,7 +70,6 @@ fun LoginScreen(navController: NavController) {
     }
 }
 
-
 @Composable
 fun Header(modifier: Modifier) {
     val activity = LocalContext.current as Activity
@@ -97,6 +98,7 @@ fun Footer(modifier: Modifier) {
     }
 }
 
+
 @Composable
 fun SignUp() {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
@@ -111,6 +113,15 @@ fun SignUp() {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun BodyPreview() {
+    val navController = rememberNavController()
+    Body(
+        modifier = Modifier.fillMaxSize(),
+        navController = navController
+    )
+}
 
 @Composable
 fun Body(modifier: Modifier, navController: NavController) {
@@ -212,7 +223,7 @@ fun LoginButton(loginEnable: Boolean, navController: NavController) {
 @Composable
 fun ForgotPassword(modifier: Modifier) {
     Text(
-        text = "Forgot password?",
+        text = "Forgot your password?",
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
         color = Color(0xFF4EA8E9),
@@ -235,7 +246,7 @@ fun Password(password: String, onTextChanged: (String) -> Unit) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFF777777),
-            backgroundColor = Color(0xFFFAFAFA),
+            backgroundColor = Color(0xFFE6E6E6),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         ),
@@ -269,7 +280,7 @@ fun Email(email: String, onTextChanged: (String) -> Unit) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFF777777),
-            backgroundColor = Color(0xFFFAFAFA),
+            backgroundColor = Color(0xFFE6E6E6),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         )

@@ -45,7 +45,7 @@ import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
 import com.example.jetpackcomposevideogamestfm.ui.theme.*
 
 @Composable
-fun MainScreen(navController: NavController) {
+fun HomeScreen(navController: NavController) {
     val viewModel: GamesViewModel = hiltViewModel()
 
     Column(

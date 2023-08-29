@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
 import com.example.jetpackcomposevideogamestfm.ui.theme.MenuColor
@@ -33,27 +34,31 @@ fun ScaffoldScreens(navController: NavController) {
 
     Scaffold(
         topBar = {
-            MyTopAppBar(
+            MainTopAppBar(
                 onClickIcon = {
                     navController.navigate(AppScreens.LoginScreen.route)
                 }
             )
         },
         scaffoldState = scaffoldState,
-        bottomBar = { MyBottomNavigation(currentScreen, onScreenSelected = { screen -> currentScreen = screen }) },
+        bottomBar = {
+            MainBottomNavigation(
+                currentScreen,
+                onScreenSelected = { screen -> currentScreen = screen })
+        },
     ) {
         // Contenido de la pantalla actual
         when (currentScreen) {
             Screen.Search -> SearchScreen(navController)
-            Screen.Home -> MainScreen(navController)
+            Screen.Home -> HomeScreen(navController)
             Screen.Favorites -> FavGamesScreen(navController)
         }
     }
 }
 
 @Composable
-fun MyTopAppBar(
-    onClickIcon:(String) -> Unit
+fun MainTopAppBar(
+    onClickIcon: (String) -> Unit
 ) {
     TopAppBar(
         title = { Text(text = "RAWG Games") },
@@ -68,8 +73,29 @@ fun MyTopAppBar(
     )
 }
 
+@Preview(showBackground = true)
 @Composable
-fun MyBottomNavigation(currentScreen: Screen, onScreenSelected: (Screen) -> Unit) {
+fun TopAppBarPreview(
+) {
+    TopAppBar(
+        title = { Text(text = "RAWG Games") },
+        backgroundColor = MenuColor,
+        contentColor = Color.White,
+
+        actions = {
+            IconButton(onClick = { }) {
+                Icon(imageVector = Icons.Default.Logout, contentDescription = "login")
+            }
+        },
+    )
+}
+
+
+@Composable
+fun MainBottomNavigation(
+    currentScreen: Screen,
+    onScreenSelected: (Screen) -> Unit
+) {
     var index by remember { mutableStateOf(currentScreen.ordinal) }
 
     BottomNavigation(backgroundColor = MenuColor, contentColor = Color.White) {
@@ -107,6 +133,47 @@ fun MyBottomNavigation(currentScreen: Screen, onScreenSelected: (Screen) -> Unit
                 index = Screen.Favorites.ordinal
                 onScreenSelected(Screen.Favorites)
             },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "fav"
+                )
+            },
+            label = { Text(text = "Favorites") }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun BottomNavigationPreview(
+) {
+    BottomNavigation(backgroundColor = MenuColor, contentColor = Color.White) {
+        BottomNavigationItem(
+            selected = false,
+            onClick = {},
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "search"
+                )
+            },
+            label = { Text(text = "Search") }
+        )
+        BottomNavigationItem(
+            selected = false,
+            onClick = {},
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = "home"
+                )
+            },
+            label = { Text(text = "Home") }
+        )
+        BottomNavigationItem(
+            selected = false,
+            onClick = {},
             icon = {
                 Icon(
                     imageVector = Icons.Default.Favorite,
