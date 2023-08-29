@@ -1,5 +1,6 @@
 package com.example.jetpackcomposevideogamestfm.screens
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,8 +17,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,10 +54,38 @@ import com.example.jetpackcomposevideogamestfm.ui.theme.TextColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.TitleColor
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DetailScreen(navController: NavController, id: String?) {
     val viewModel: GamesViewModel = hiltViewModel()
-    GetGameDetails(viewModel, id, navController)
+    Scaffold(
+        topBar = {
+            DetailsTopBar(
+                onClickIcon = {
+                    navController.popBackStack()
+                }
+            )
+        },
+    ) {
+        GetGameDetails(viewModel, id, navController)
+    }
+
+}
+
+@Composable
+fun DetailsTopBar(
+    onClickIcon: (String) -> Unit
+) {
+    TopAppBar(
+        title = {  },
+        backgroundColor = MainCardColor,
+        contentColor = Color.White,
+        navigationIcon = {
+            IconButton(onClick = { onClickIcon("Go back") }) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back")
+            }
+        },
+    )
 }
 
 @Composable
@@ -79,6 +112,7 @@ fun GetGameDetails(viewModel: GamesViewModel, id: String?, navController: NavCon
             is DetailsState.Error -> {
                 ErrorState()
             }
+
         }
     }
 
