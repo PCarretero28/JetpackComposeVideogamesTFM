@@ -15,6 +15,11 @@ object AppViewModelProvider {
             GameEntryViewModel(inventoryApplication().container.gamesRepository)
         }
 
+        // Initializer for HomeViewModel
+        initializer {
+            FavGamesViewModel(inventoryApplication().container.gamesRepository)
+        }
+
     }
 }
 
