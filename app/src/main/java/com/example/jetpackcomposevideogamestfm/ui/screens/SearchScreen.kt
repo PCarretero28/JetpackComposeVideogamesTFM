@@ -1,4 +1,4 @@
-package com.example.jetpackcomposevideogamestfm.screens
+package com.example.jetpackcomposevideogamestfm.ui.screens
 
 import android.util.Log
 import androidx.compose.foundation.background

@@ -1,4 +1,4 @@
-package com.example.jetpackcomposevideogamestfm.screens
+package com.example.jetpackcomposevideogamestfm.ui.screens
 
 import android.app.Activity
 import android.util.Patterns

@@ -5,9 +5,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.jetpackcomposevideogamestfm.screens.LoginScreen
-import com.example.jetpackcomposevideogamestfm.screens.DetailScreen
-import com.example.jetpackcomposevideogamestfm.screens.ScaffoldScreens
+import com.example.jetpackcomposevideogamestfm.ui.screens.LoginScreen
+import com.example.jetpackcomposevideogamestfm.ui.screens.DetailScreen
+import com.example.jetpackcomposevideogamestfm.ui.screens.ScaffoldScreens
 
 @Composable
 fun AppNavigation() {

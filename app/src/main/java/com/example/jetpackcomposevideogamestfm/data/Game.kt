@@ -10,8 +10,8 @@ data class Game (
     val name: String,
     val description_raw: String,
     val metacritic: Int,
-    val released: String,
-    val background_image: String,
+    val released: String?,
+    val background_image: String?,
     val background_image_additional: String,
-    val reviews_count: Int
+    val reviews_count: Int,
 )

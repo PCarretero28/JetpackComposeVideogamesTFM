@@ -1,6 +1,7 @@
-package com.example.jetpackcomposevideogamestfm.screens
+package com.example.jetpackcomposevideogamestfm.ui.screens
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.jetpackcomposevideogamestfm.DetailsState
@@ -48,16 +51,24 @@ import com.example.jetpackcomposevideogamestfm.model.GameDetailsModel
 import com.example.jetpackcomposevideogamestfm.model.GenreModel
 import com.example.jetpackcomposevideogamestfm.model.PlatformModel
 import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
+import com.example.jetpackcomposevideogamestfm.ui.AppViewModelProvider
+import com.example.jetpackcomposevideogamestfm.ui.GameEntryViewModel
 import com.example.jetpackcomposevideogamestfm.ui.theme.MainCardColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.MenuColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.TextColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.TitleColor
+import kotlinx.coroutines.launch
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun DetailScreen(navController: NavController, id: String?) {
-    val viewModel: GamesViewModel = hiltViewModel()
+fun DetailScreen(
+    navController: NavController,
+    id: String?,
+    viewModel: GameEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
+) {
+    val gamesViewModel: GamesViewModel = hiltViewModel()
+
     Scaffold(
         topBar = {
             DetailsTopBar(
@@ -67,7 +78,12 @@ fun DetailScreen(navController: NavController, id: String?) {
             )
         },
     ) {
-        GetGameDetails(viewModel, id, navController)
+        GetGameDetails(
+            viewModel,
+            gamesViewModel,
+            id,
+            navController
+        )
     }
 
 }
@@ -89,8 +105,13 @@ fun DetailsTopBar(
 }
 
 @Composable
-fun GetGameDetails(viewModel: GamesViewModel, id: String?, navController: NavController) {
-    val detailsState by remember { viewModel.detailsState }
+fun GetGameDetails(
+    viewModel: GameEntryViewModel ,
+    gamesViewModel: GamesViewModel,
+    id: String?,
+    navController: NavController
+) {
+    val detailsState by remember { gamesViewModel.detailsState }
 
     Box(modifier = Modifier
         .background(MainCardColor)
@@ -104,7 +125,11 @@ fun GetGameDetails(viewModel: GamesViewModel, id: String?, navController: NavCon
                 val game = (detailsState as DetailsState.Success).game
                 LazyColumn {
                     item {
-                        ShowGameDetails(game, navController)
+                        ShowGameDetails(
+                            juego = game,
+                            navController = navController,
+                            viewModel = viewModel
+                        )
                     }
                 }
             }
@@ -117,12 +142,16 @@ fun GetGameDetails(viewModel: GamesViewModel, id: String?, navController: NavCon
     }
 
     LaunchedEffect(true) {
-        viewModel.getDetailsGame(id!!.toInt())
+        gamesViewModel.getDetailsGame(id!!.toInt())
     }
 }
 
 @Composable
-fun ShowGameDetails(juego: GameDetailsModel?, navController: NavController) {
+fun ShowGameDetails(
+    juego: GameDetailsModel?,
+    navController: NavController,
+    viewModel: GameEntryViewModel
+) {
 
     Column {
         //Main Image
@@ -178,7 +207,8 @@ fun ShowGameDetails(juego: GameDetailsModel?, navController: NavController) {
                         .fillMaxWidth()
                         .padding(vertical = 4.dp)
                         .wrapContentSize(Alignment.Center),
-                    navController
+                    navController,
+                    viewModel = viewModel
                 )
             }
 
@@ -217,22 +247,24 @@ fun ShowGameDetails(juego: GameDetailsModel?, navController: NavController) {
 }
 
 @Composable
-fun AddToFavs(game: GameDetailsModel?, modifier: Modifier, navController: NavController) {
+fun AddToFavs(
+    game: GameDetailsModel?,
+    modifier: Modifier,
+    navController: NavController,
+    viewModel: GameEntryViewModel
+) {
     val context = LocalContext.current
-
+    val coroutineScope = rememberCoroutineScope()
 
     Box(modifier = modifier){
         FloatingActionButton(
             onClick = {
-                //Add game to Database
-
-
-                //Game id is already in database
-
-
-                Toast.makeText(context, "Has añadido ${game!!.name} con éxito", Toast.LENGTH_SHORT).show()
-
-                navController.navigate(AppScreens.ScaffoldScreens.route)
+                Log.i("GAME", "AddToFavs")
+                coroutineScope.launch {
+                    viewModel.saveGame(game)
+                    Toast.makeText(context, "Has añadido ${game!!.name} con éxito", Toast.LENGTH_SHORT).show()
+                    navController.navigate(AppScreens.ScaffoldScreens.route)
+                }
             },
             backgroundColor = MenuColor,
             contentColor = Color.White

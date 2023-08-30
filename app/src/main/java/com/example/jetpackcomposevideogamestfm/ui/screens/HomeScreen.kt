@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterialApi::class)
 
-package com.example.jetpackcomposevideogamestfm.screens
+package com.example.jetpackcomposevideogamestfm.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

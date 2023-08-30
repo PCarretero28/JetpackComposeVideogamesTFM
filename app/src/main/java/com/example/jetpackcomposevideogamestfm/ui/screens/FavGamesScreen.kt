@@ -1,4 +1,4 @@
-package com.example.jetpackcomposevideogamestfm.screens
+package com.example.jetpackcomposevideogamestfm.ui.screens
 
 
 import androidx.compose.foundation.background
@@ -24,6 +24,7 @@ fun FavGamesScreen(navController: NavController) {
     ) {
 
         LazyColumn {
+
         }
     }
 
