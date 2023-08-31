@@ -14,7 +14,7 @@ val Pink40 = Color(0xFF7D5260)
 
 //Main colors
 val MainBackgroundColor = Color(0xFF2A465E)
-val FavsBackgroundColor = Color(0xFFE4C624)
+val FavsBackgroundColor = Color(0xFFF1E8B7)
 val MainCardColor = Color(0xFF012038)
 val TitleColor = Color(0xFFFFFFFF)
 val TextColor = Color(0xFFA29FA0)
