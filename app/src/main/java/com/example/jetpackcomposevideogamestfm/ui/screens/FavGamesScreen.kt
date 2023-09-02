@@ -60,6 +60,7 @@ fun FavGamesScreen(
 
 @Composable
 fun FavGamesBody(gameList: List<Game>) {
+    val sortedGameList = gameList.sortedByDescending { it.metacritic }
 
     Column(
         modifier = Modifier
@@ -71,7 +72,7 @@ fun FavGamesBody(gameList: List<Game>) {
             SearchForFavGames(Modifier.align(Alignment.CenterHorizontally))
         } else {
             FavGamesList(
-                gameList = gameList
+                gameList = sortedGameList
             )
         }
     }
@@ -155,6 +156,8 @@ fun FavGameCardItem(juego: Game) {
                     .padding(horizontal = 16.dp)
 
             ) {
+                Spacer(modifier = Modifier.height(4.dp))
+
                 Text(text = juego.name, color = TitleColor)
 
                 Spacer(modifier = Modifier.height(4.dp))

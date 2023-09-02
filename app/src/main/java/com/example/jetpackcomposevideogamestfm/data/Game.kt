@@ -14,4 +14,7 @@ data class Game (
     val background_image: String?,
     val background_image_additional: String,
     val reviews_count: Int,
+    val platforms: List<String>,
+    val developers: List<String>,
+    val genres: List<String>
 )
