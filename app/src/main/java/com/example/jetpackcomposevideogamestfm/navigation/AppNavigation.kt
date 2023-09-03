@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.jetpackcomposevideogamestfm.ui.screens.LoginScreen
 import com.example.jetpackcomposevideogamestfm.ui.screens.DetailScreen
+import com.example.jetpackcomposevideogamestfm.ui.screens.FavDetailScreen
 import com.example.jetpackcomposevideogamestfm.ui.screens.ScaffoldScreens
 
 @Composable
@@ -26,6 +27,15 @@ fun AppNavigation() {
             arguments = listOf(navArgument("id") { defaultValue = "326243"})
         ){backStackEntry->
             DetailScreen(
+                navController = navigationController,
+                id = backStackEntry.arguments?.getString("id")
+            )
+        }
+        composable(
+            route = AppScreens.FavDetailScreen.route,
+            arguments = listOf(navArgument("id") { defaultValue = "326243"})
+        ){backStackEntry->
+            FavDetailScreen(
                 navController = navigationController,
                 id = backStackEntry.arguments?.getString("id")
             )

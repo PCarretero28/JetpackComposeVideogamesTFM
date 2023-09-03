@@ -272,7 +272,6 @@ fun BestGames2022(viewModel: GamesViewModel, navController: NavController) {
         viewModel.getBestGamesOfTheYear()
     }
 
-
 }
 
 @Composable

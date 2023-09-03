@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.rememberAsyncImagePainter
+import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
 import com.example.jetpackcomposevideogamestfm.ui.theme.MainCardColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.TextColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.TitleColor
@@ -54,12 +54,13 @@ fun FavGamesScreen(
     val favGamesUiState by viewModel.gameUiState.collectAsState()
 
     FavGamesBody(
-        gameList = favGamesUiState.gameList
+        gameList = favGamesUiState.gameList,
+        navController = navController
     )
 }
 
 @Composable
-fun FavGamesBody(gameList: List<Game>) {
+fun FavGamesBody(gameList: List<Game>, navController: NavController) {
     val sortedGameList = gameList.sortedByDescending { it.metacritic }
 
     Column(
@@ -72,7 +73,8 @@ fun FavGamesBody(gameList: List<Game>) {
             SearchForFavGames(Modifier.align(Alignment.CenterHorizontally))
         } else {
             FavGamesList(
-                gameList = sortedGameList
+                gameList = sortedGameList,
+                navController = navController
             )
         }
     }
@@ -88,26 +90,27 @@ fun SearchForFavGames(modifier: Modifier) {
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleMedium
         )
-        CircularProgressIndicator(
-            color = Color.LightGray,
-            strokeWidth = 8.dp)
     }
 }
 
 @Composable
 fun FavGamesList(
-    gameList: List<Game>
+    gameList: List<Game>,
+    navController: NavController
 ) {
     LazyColumn {
         items(gameList.size) {
-            FavGameCardItem(juego = gameList[it])
+            FavGameCardItem(
+                juego = gameList[it],
+                navController = navController
+            )
         }
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun FavGameCardItem(juego: Game) {
+fun FavGameCardItem(juego: Game, navController: NavController) {
 
     val metacriticColor = when (juego.metacritic) {
         in 94..Int.MAX_VALUE -> color1
@@ -119,10 +122,9 @@ fun FavGameCardItem(juego: Game) {
         else -> color6
     }
 
-
     Card(
         onClick = {
-                  //Fav Game Details
+            navController.navigate(AppScreens.FavDetailScreen.createRoute(juego.id.toString()))
         },
         modifier = Modifier
             .padding(4.dp)

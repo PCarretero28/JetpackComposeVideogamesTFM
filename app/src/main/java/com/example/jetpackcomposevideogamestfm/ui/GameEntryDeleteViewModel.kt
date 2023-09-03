@@ -6,13 +6,16 @@ import com.example.jetpackcomposevideogamestfm.data.Game
 import com.example.jetpackcomposevideogamestfm.data.GamesRepository
 import com.example.jetpackcomposevideogamestfm.model.GameDetailsModel
 
-class GameEntryViewModel(private val gamesRepository: GamesRepository) : ViewModel() {
+class GameEntryDeleteViewModel(private val gamesRepository: GamesRepository) : ViewModel() {
 
     suspend fun saveGame(game: GameDetailsModel?) {
         Log.i("GAME", game!!.name)
-
         gamesRepository.insertGame(game.toGame())
+    }
 
+    suspend fun deleteGame(game: GameDetailsModel?){
+        Log.i("GAME", game!!.name)
+        gamesRepository.deleteGame(game.toGame())
     }
 }
 

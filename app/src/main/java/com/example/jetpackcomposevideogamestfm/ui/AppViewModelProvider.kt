@@ -12,7 +12,7 @@ object AppViewModelProvider {
 
         // Initializer for GameEntryViewModel
         initializer {
-            GameEntryViewModel(inventoryApplication().container.gamesRepository)
+            GameEntryDeleteViewModel(inventoryApplication().container.gamesRepository)
         }
 
         // Initializer for HomeViewModel

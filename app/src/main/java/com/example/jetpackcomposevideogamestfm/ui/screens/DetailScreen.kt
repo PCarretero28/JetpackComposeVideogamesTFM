@@ -24,6 +24,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,7 +53,8 @@ import com.example.jetpackcomposevideogamestfm.model.GenreModel
 import com.example.jetpackcomposevideogamestfm.model.PlatformModel
 import com.example.jetpackcomposevideogamestfm.navigation.AppScreens
 import com.example.jetpackcomposevideogamestfm.ui.AppViewModelProvider
-import com.example.jetpackcomposevideogamestfm.ui.GameEntryViewModel
+import com.example.jetpackcomposevideogamestfm.ui.GameEntryDeleteViewModel
+import com.example.jetpackcomposevideogamestfm.ui.theme.DeleteColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.MainCardColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.MenuColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.TextColor
@@ -65,7 +67,7 @@ import kotlinx.coroutines.launch
 fun DetailScreen(
     navController: NavController,
     id: String?,
-    viewModel: GameEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: GameEntryDeleteViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val gamesViewModel: GamesViewModel = hiltViewModel()
 
@@ -82,7 +84,8 @@ fun DetailScreen(
             viewModel,
             gamesViewModel,
             id,
-            navController
+            navController,
+            false
         )
     }
 
@@ -106,10 +109,11 @@ fun DetailsTopBar(
 
 @Composable
 fun GetGameDetails(
-    viewModel: GameEntryViewModel ,
+    viewModel: GameEntryDeleteViewModel,
     gamesViewModel: GamesViewModel,
     id: String?,
-    navController: NavController
+    navController: NavController,
+    isInDatabase: Boolean
 ) {
     val detailsState by remember { gamesViewModel.detailsState }
 
@@ -128,7 +132,8 @@ fun GetGameDetails(
                         ShowGameDetails(
                             juego = game,
                             navController = navController,
-                            viewModel = viewModel
+                            viewModel = viewModel,
+                            isInDatabase = isInDatabase
                         )
                     }
                 }
@@ -150,7 +155,8 @@ fun GetGameDetails(
 fun ShowGameDetails(
     juego: GameDetailsModel?,
     navController: NavController,
-    viewModel: GameEntryViewModel
+    viewModel: GameEntryDeleteViewModel,
+    isInDatabase: Boolean
 ) {
 
     Column {
@@ -200,18 +206,34 @@ fun ShowGameDetails(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            //Add to database
-            Box(Modifier.fillMaxWidth()){
-                AddToFavs(juego,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp)
-                        .wrapContentSize(Alignment.Center),
-                    navController,
-                    viewModel = viewModel
-                )
-            }
+            //Si está en database, opción de borrar
+            //Si no está en database, opción de añadir
 
+            if(isInDatabase){
+                //Delete from database
+                Box(Modifier.fillMaxWidth()){
+                    DeleteFromCollection(juego,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                            .wrapContentSize(Alignment.Center),
+                        navController,
+                        viewModel = viewModel
+                    )
+                }
+            }else{
+                //Add to database
+                Box(Modifier.fillMaxWidth()){
+                    AddToFavs(juego,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                            .wrapContentSize(Alignment.Center),
+                        navController,
+                        viewModel = viewModel
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -251,7 +273,7 @@ fun AddToFavs(
     game: GameDetailsModel?,
     modifier: Modifier,
     navController: NavController,
-    viewModel: GameEntryViewModel
+    viewModel: GameEntryDeleteViewModel
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -270,6 +292,33 @@ fun AddToFavs(
             contentColor = Color.White
         ) {
             Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
+        }
+    }
+}
+@Composable
+fun DeleteFromCollection(
+    game: GameDetailsModel?,
+    modifier: Modifier,
+    navController: NavController,
+    viewModel: GameEntryDeleteViewModel
+){
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    Box(modifier = modifier){
+        FloatingActionButton(
+            onClick = {
+                Log.i("GAME", "DeleteFromCollection")
+                coroutineScope.launch {
+                    viewModel.deleteGame(game)
+                    Toast.makeText(context, "Has borrado ${game!!.name} de tu lista", Toast.LENGTH_SHORT).show()
+                    navController.navigate(AppScreens.ScaffoldScreens.route)
+                }
+            },
+            backgroundColor = DeleteColor,
+            contentColor = Color.White
+        ) {
+            Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete")
         }
     }
 }
@@ -317,7 +366,6 @@ fun Genres(genres: List<GenreModel>, modifier: Modifier) {
                 Text(text = textToDisplay, color = TitleColor)
             }
         }
-
     }
 }
 

@@ -19,6 +19,7 @@ val MainCardColor = Color(0xFF012038)
 val TitleColor = Color(0xFFFFFFFF)
 val TextColor = Color(0xFFA29FA0)
 val MenuColor = Color(0xFF095B9C)
+val DeleteColor = Color(0xFFE71C1C)
 
 
 

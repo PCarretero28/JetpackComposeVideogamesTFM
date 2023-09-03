@@ -9,4 +9,8 @@ sealed class AppScreens(val route: String){
         fun createRoute(id:String)="game_details_screen/$id"
     }
 
+    object FavDetailScreen: AppScreens("fav_details_screen/{id}"){
+        fun createRoute(id:String)="fav_details_screen/$id"
+    }
+
 }
