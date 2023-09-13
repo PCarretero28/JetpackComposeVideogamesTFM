@@ -15,7 +15,7 @@ fun AppNavigation() {
 
     val navigationController = rememberNavController()
 
-    NavHost(navController = navigationController, startDestination = AppScreens.ScaffoldScreens.route){
+    NavHost(navController = navigationController, startDestination = AppScreens.LoginScreen.route){
         composable(route = AppScreens.LoginScreen.route){
             LoginScreen(navigationController)
         }

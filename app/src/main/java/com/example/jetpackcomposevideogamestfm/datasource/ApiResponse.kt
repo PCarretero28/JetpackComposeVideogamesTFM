@@ -18,7 +18,6 @@ interface ApiResponse {
     @GET("games?key=abe63b7874204e9bad818928d93b5278&dates=2001-01-01,2023-08-31&ordering=-metacritic")
     suspend fun getBestGamesCentury(): Response<GameList>
 
-
     @GET("games?key=abe63b7874204e9bad818928d93b5278&platforms=187,18&ordering=-added")
     suspend fun getPlaystation4and5Games(): Response<GameList>
 
@@ -27,7 +26,6 @@ interface ApiResponse {
 
     @GET("games?key=abe63b7874204e9bad818928d93b5278&developers=4&ordering=-metacritic")
     suspend fun getBethesdaGames(): Response<GameList>
-
 
 
     //Search games by name

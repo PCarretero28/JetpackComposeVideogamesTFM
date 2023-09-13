@@ -1,4 +1,4 @@
-package com.example.jetpackcomposevideogamestfm
+package com.example.jetpackcomposevideogamestfm.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -128,7 +128,8 @@ class GamesViewModel @Inject constructor(
                 val games = gameList?.topGames
                 _gamesPlaystationState.value = GamesPlaystationState.Success(games)
             }catch (e: Exception){
-                _gamesPlaystationState.value = GamesPlaystationState.Error("Error al obtener juegos")
+                _gamesPlaystationState.value =
+                    GamesPlaystationState.Error("Error al obtener juegos")
             }
 
         }

@@ -18,7 +18,6 @@ abstract class CollectionDatabase: RoomDatabase() {
         private var Instance: CollectionDatabase? = null
 
         fun getDatabase(context: Context): CollectionDatabase {
-            // if the Instance is not null, return it, otherwise create a new database instance.
             return Instance ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,

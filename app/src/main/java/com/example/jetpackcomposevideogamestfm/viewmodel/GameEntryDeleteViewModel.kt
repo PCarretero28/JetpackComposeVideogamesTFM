@@ -1,4 +1,4 @@
-package com.example.jetpackcomposevideogamestfm.ui
+package com.example.jetpackcomposevideogamestfm.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

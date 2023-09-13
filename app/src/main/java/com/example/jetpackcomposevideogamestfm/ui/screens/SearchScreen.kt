@@ -30,8 +30,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.jetpackcomposevideogamestfm.GamesByNameState
-import com.example.jetpackcomposevideogamestfm.GamesViewModel
+import com.example.jetpackcomposevideogamestfm.viewmodel.GamesByNameState
+import com.example.jetpackcomposevideogamestfm.viewmodel.GamesViewModel
 import com.example.jetpackcomposevideogamestfm.ui.theme.MainBackgroundColor
 import com.example.jetpackcomposevideogamestfm.ui.theme.MenuColor
 

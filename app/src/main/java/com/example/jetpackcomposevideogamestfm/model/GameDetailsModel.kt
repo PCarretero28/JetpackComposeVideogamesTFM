@@ -1,6 +1,5 @@
 package com.example.jetpackcomposevideogamestfm.model
 
-
 data class GameDetailsModel(
     val id: Int,
     val name: String,

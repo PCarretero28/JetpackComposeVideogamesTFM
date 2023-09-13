@@ -6,9 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.jetpackcomposevideogamestfm.GamesViewModel
+import com.example.jetpackcomposevideogamestfm.viewmodel.GamesViewModel
 import com.example.jetpackcomposevideogamestfm.ui.AppViewModelProvider
-import com.example.jetpackcomposevideogamestfm.ui.GameEntryDeleteViewModel
+import com.example.jetpackcomposevideogamestfm.viewmodel.GameEntryDeleteViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

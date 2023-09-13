@@ -26,7 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.jetpackcomposevideogamestfm.data.Game
 import com.example.jetpackcomposevideogamestfm.ui.AppViewModelProvider
-import com.example.jetpackcomposevideogamestfm.ui.FavGamesViewModel
+import com.example.jetpackcomposevideogamestfm.viewmodel.FavGamesViewModel
 import com.example.jetpackcomposevideogamestfm.ui.theme.FavsBackgroundColor
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue

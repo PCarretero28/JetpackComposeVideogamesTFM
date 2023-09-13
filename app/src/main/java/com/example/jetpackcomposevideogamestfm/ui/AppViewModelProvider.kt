@@ -5,6 +5,8 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.jetpackcomposevideogamestfm.MyApplication
+import com.example.jetpackcomposevideogamestfm.viewmodel.FavGamesViewModel
+import com.example.jetpackcomposevideogamestfm.viewmodel.GameEntryDeleteViewModel
 
 
 object AppViewModelProvider {
